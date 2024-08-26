@@ -83,7 +83,7 @@ function AddPost() {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <FormControl>
-                            <FormLabel>Description</FormLabel>
+                            <FormLabel>설명</FormLabel>
                             <Textarea
                                 placeholder='Description'
                                 onChange={formik.handleChange}
@@ -94,7 +94,7 @@ function AddPost() {
                         </FormControl>
 
                         <FormControl mt={4}>
-                            <FormLabel>Upload Image</FormLabel>
+                            <FormLabel>이미지 추가</FormLabel>
                             <Button colorScheme={'pink'} as={'label'}>
                                 {file ? file.name : " Upload Image"}
                                 <input hidden type={'file'}
