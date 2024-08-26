@@ -14,7 +14,7 @@ function Register() {
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
+      name: "",       // firstName을 name으로 변경
       lastName: "",
       email: "",
       password: ""
@@ -78,14 +78,14 @@ function Register() {
           <VStack as={'form'} p={10} onSubmit={formik.handleSubmit} borderRadius={'xl'} boxShadow={'2xl'} spacing={5}>
             <Heading>Register</Heading>
             <FormControl>
-              <FormLabel>First Name</FormLabel>
-              <Input
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.firstName}
-                name='firstName'
-                type='text'
-              />
+                <FormLabel>Name</FormLabel>  {/* First Name을 Name으로 변경 */}
+                <Input
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.name}  // firstName을 name으로 변경
+                  name='name'                 // firstName을 name으로 변경
+                  type='text'
+                />
 
             </FormControl>
             <FormControl>
@@ -126,4 +126,4 @@ function Register() {
   )
 }
 
-export default Register
+export default Register;
