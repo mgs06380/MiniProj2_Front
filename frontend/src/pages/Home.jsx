@@ -11,6 +11,11 @@ function Home() {
     const { user } = useContext(AuthContext)
     const [posts, setPosts] = useState([])
 
+    // 디버깅 코드: user 객체를 출력
+    useEffect(() => {
+        console.log("User in Home component:", user);
+    }, [user]);
+
     const getData = useCallback(async () => {
         const postService = new PostService()
         try {
@@ -29,15 +34,10 @@ function Home() {
         }
     }, [getData, user])
 
-
     return (
         <>
             <Nav />
-            {user ? (
-                <ProfileCard userName={user.fullName} />
-            ) : (
-                <ProfileCard userName="Guest" />
-            )}
+            <ProfileCard userName={user.fullName} />  {/* ProfileCard에 fullName 전달 */}
             {
                 posts.length === 0 ?
                     <Center>
@@ -53,4 +53,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Home;
