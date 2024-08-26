@@ -27,8 +27,13 @@ function Nav() {
         boxShadow={'2xl'}
       >
         <NavItem description={'Home'} icon={<TbHomeHeart />} path={"/home"}/>
-        <NavItem description={'Profile'} icon={<PiFinnTheHumanDuotone />} path={`/profile/${user.id}`}/>
-        <AddPost/>
+        {user ? (
+          <NavItem description={'Profile'} icon={<PiFinnTheHumanDuotone />} path={`/profile/${user.id}`} />
+        ) : (
+          <NavItem description={'Profile'} icon={<PiFinnTheHumanDuotone />} path={"/login"} />
+        )}
+
+        <AddPost />
 
       
       </Stack>

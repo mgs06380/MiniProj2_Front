@@ -14,25 +14,30 @@ function Home() {
     const getData = useCallback(async () => {
         const postService = new PostService()
         try {
-            if (user.id !== undefined) {
+            if (user && user.id !== undefined) {
                 const result = await postService.getAllByUserFollowing(user.id, localStorage.getItem("token"))
                 setPosts(result.data)
             }
-
         } catch (error) {
             console.log(error.message)
         }
-    }, [user.id])
+    }, [user])
 
     useEffect(() => {
-        getData()
-    }, [getData])
+        if (user) {
+            getData()
+        }
+    }, [getData, user])
 
 
     return (
         <>
             <Nav />
-            <ProfileCard userName={user.fullName} />
+            {user ? (
+                <ProfileCard userName={user.fullName} />
+            ) : (
+                <ProfileCard userName="Guest" />
+            )}
             {
                 posts.length === 0 ?
                     <Center>
@@ -40,12 +45,10 @@ function Home() {
                             <Heading>No posts to show</Heading>
                             <Image src={svg} h={'50vh'} />
                         </VStack>
-
                     </Center>
                     :
                     <Posts posts={posts} />
             }
-
         </>
     )
 }
