@@ -5,43 +5,55 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [isAuthenticated, setIsAuthenticated] = useState(
-        localStorage.getItem("isAuthenticated") || false
+        localStorage.getItem("isAuthenticated") === "true"
     );
-    const [user, setUser] = useState(
-        JSON.parse(localStorage.getItem("user")) || {}
-    );
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser && savedUser !== "undefined") {
+            try {
+                return JSON.parse(savedUser);
+            } catch (error) {
+                console.error("Failed to parse user data:", error);
+            }
+        }
+        return null;
+    });
 
     const login = (token) => {
         const decodedToken = jwtDecode(token);
         setUser(decodedToken.user);
         setIsAuthenticated(true);
-        localStorage.setItem("token",token)
-        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("token", token);
+        localStorage.setItem("isAuthenticated", "true");
         localStorage.setItem("user", JSON.stringify(decodedToken.user));
-        navigate("/home")
+        navigate("/home");
     };
 
     const logout = () => {
         setIsAuthenticated(false);
-        setUser({});
+        setUser(null);
         localStorage.removeItem("isAuthenticated");
         localStorage.removeItem("user");
-        localStorage.removeItem("token")
-        navigate("/")
+        localStorage.removeItem("token");
+        navigate("/");
     };
 
     useEffect(() => {
         const checkTokenExpired = () => {
             const token = localStorage.getItem("token");
             if (token) {
-                const decodedToken = jwtDecode(token);
-                const currentTime = Date.now() / 1000;
-                if (decodedToken.exp < currentTime) {
+                try {
+                    const decodedToken = jwtDecode(token);
+                    const currentTime = Date.now() / 1000;
+                    if (decodedToken.exp < currentTime) {
+                        logout();
+                        console.log("token expired");
+                    }
+                } catch (error) {
+                    console.error("Failed to decode token:", error);
                     logout();
-                    console.log("token expired")
                 }
             }
         };
